@@ -1,25 +1,23 @@
 import React , { Component } from "react"
-import { Card , CardBody , CardImg , CardText , CardTitle } from "reactstrap"
+import { Card , CardBody , CardImg , CardTitle } from "reactstrap"
 
 class DishDetail extends Component {
-
-    constructor(props) {
-        super(props)
-    }
 
 
     renderDish(dish) {
         if (dish != null) {
             return(
-                <div key={dish.id} className="col-12 col-md-5 m-1">
-                    <Card>
-                        <CardImg width="100%" src={dish.image} alt={dish.name}></CardImg>
-                        <CardBody>
-                        <CardTitle>{dish.name}</CardTitle> 
-                            {dish.description}
-                        </CardBody>
-                    </Card>
-                </div>
+                
+                    <div key={dish.id} className="col-12 col-md-5 m-1">
+                        <Card>
+                            <CardImg width="100%" src={dish.image} alt={dish.name}></CardImg>
+                            <CardBody>
+                            <CardTitle>{dish.name}</CardTitle> 
+                                {dish.description}
+                            </CardBody>
+                        </Card>
+                    </div>
+                
             )
         }
     }
@@ -30,7 +28,7 @@ class DishDetail extends Component {
                 <div></div>
             )            
         }
-        const cmnts = comments.map(comment => {
+        const Com = comments.map(comment => {
             return (
                 <li key={comment.id}>
                     <p>{comment.comment}</p>
@@ -50,7 +48,7 @@ class DishDetail extends Component {
             <div className='col-12 col-md-5 m-1'>
                 <h3>Comments</h3>
                 <ul className='list-unstyled'>
-                    {cmnts}
+                    {Com}
                 </ul>
 
             </div>
@@ -66,12 +64,12 @@ class DishDetail extends Component {
                 )
             }
         const detail = this.renderDish(dish)
-        const comments = this.renderComments(dish.comments)
+        const commentsTag = this.renderComments(dish.comments)
         return (
             <div  className="container">
                 <div className="row">
                     {detail}
-                    {comments}
+                    {commentsTag}
                 </div>
             </div>
         )
