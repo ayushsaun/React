@@ -36,13 +36,24 @@ class Main extends Component {
         leader = {this.state.leaders.filter((leader) => leader.featured==true)[0]}  />
       )
     }
+
+    const DishWithId = ({match}) => {
+      return(
+        // parseInt will convert the string coming from match.params.dishId into a base 10 integer as mentioned in
+        <DishDetail dish={this.state.dishes.filter((dish) => dish.id == parseInt(match.params.dishId,10))[0]} 
+        comments={this.state.comments.filter((comment) => comment.id == parseInt(match.params.dishId,10))}
+          />
+      )
+    }
+
     return (
       <div>
         <Header />
         <Switch>
           <Route path="/home" component = {HomePage} />
           <Route exact path="/menu" component={() => <Menu dish={this.state.dishes} />} />
-          <Route path="/contactus" component = {Contact} />
+          <Route path='/menu/:dishId' component={DishWithId} />
+          <Route exact path="/contactus" component = {Contact} />
           <Redirect to='/home' />
         </Switch>
         <Footer />
