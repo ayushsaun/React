@@ -10,6 +10,7 @@ import {COMMENTS} from '../shared/Comments'
 import {LEADERS} from '../shared/Leaders'
 import {PROMOTIONS} from '../shared/Promotions'
 import {Switch , Route , Redirect } from 'react-router-dom'
+import About from './Aboutus'
 
 class Main extends Component {
 
@@ -51,7 +52,9 @@ class Main extends Component {
         <Header />
         <Switch>
           <Route path="/home" component = {HomePage} />
+          <Route path="/aboutus" component={() => <About leaders={this.state.leaders} /> } />
           <Route exact path="/menu" component={() => <Menu dish={this.state.dishes} />} />
+          {/* here we passed dishId to menu in different fashion and it can be used in menuComponent as we observed */}
           <Route path='/menu/:dishId' component={DishWithId} />
           <Route exact path="/contactus" component = {Contact} />
           <Redirect to='/home' />

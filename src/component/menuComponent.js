@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
        return (
         //    here we didnt use this.props cause we are already passing onclick to function as parameter
         <Card>
+            {/* here we used link to specify the parameter */}
             <Link to={`/menu/${dish.id}`} >
                 <CardImg width="100%" src={dish.image} alt={dish.name} />
                 <CardImgOverlay>
