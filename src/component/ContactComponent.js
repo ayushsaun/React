@@ -52,32 +52,39 @@ class Contact extends Component {
     }
 
     validate(firstname ,  lastname ,telnum , email) {
-        const errors = {
+        const error = {
             firstname: '',
             lastname: '',
             telnum: '',
             email: ''
         };
         if(this.state.touched.firstname && firstname.length < 3)
-            errors.firstname = 'first name should be >= 3 characters';
+            error.firstname = 'first name should be >= 3 characters';
         else if(this.state.touched.firstname && firstname.length > 10)
-            errors.firstname = 'first name should be <= 10 characters';
+            error.firstname = 'first name should be <= 10 characters';
 
         if(this.state.touched.lastname && lastname.length < 3)
-            errors.lastname = 'last name should be >= 3 characters';
+            error.lastname = 'last name should be >= 3 characters';
         else if(this.state.touched.lastname && lastname.length > 10)
-            errors.lastname = 'last name should be <= 10 characters';
+            error.lastname = 'last name should be <= 10 characters';
 
         // this means all characters that is string of characters should be number
         const reg = /^\d+$/
         if(this.state.touched.telnum && !reg.test(telnum))
-            errors.telnum = 'tel number should contain only numbers'
+            error.telnum = 'tel number should contain only numbers'
 
         // this is checking if there is @ in given email or not
-        if (this.state.touched.email && email.split('').filter(x => x === '@').length !==1)
-            errors.email = 'email should contain @ sign'
+        if (this.state.touched.email && email.split('').filter(x => x === '@').length !== 1)
+            error.email = 'email should contain @ sign'
 
-        return errors
+        if (this.state.touched.email && email.split('').filter(x => x === '.').length !== 1)
+            error.email = 'email should contain gmail.com'
+
+        if (this.state.touched.email && email.length < 10)
+            error.email = "invalid email"
+        
+        
+        return error
     }
 
     render() {
@@ -130,7 +137,11 @@ class Contact extends Component {
                             <FormGroup row>
                                 <Label htmlfor="firstname" md={2}>First Name</Label>
                                 <Col md={10}>
-                                    <Input type="text" id="firstname" name="firstname" valid={errors.firstname === ''} invalid = {errors.firstname !== ''} placeholder="First Name" value={this.state.firstname} onBlur={this.handleBlur('firstname')} onChange={this.handleInputChange}/>
+                                    <Input type="text" id="firstname" name="firstname" 
+                                    valid={errors.firstname === ''} 
+                                    invalid = {errors.firstname !== ''} placeholder="First Name" 
+                                    value={this.state.firstname} onBlur={this.handleBlur('firstname')} 
+                                    onChange={this.handleInputChange}/>
                                     <FormFeedback>{errors.firstname}</FormFeedback>
                                 </Col>
                             </FormGroup>
