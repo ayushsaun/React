@@ -9,11 +9,12 @@ import {Switch , Route , Redirect , withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import About from './Aboutus'
 
-
+// here we are getting state values from the state function we made in reducer.js which is accessible from configureStore
+// and we added that in app.js so its accessible everywhere now
 const mapStateToProps = state => {
   return {
     dishes : state.dishes,
-    comments : state.dishes,
+    comments : state.comments,
     leaders : state.leaders,
     promotions : state.promotions
   }   
@@ -67,7 +68,7 @@ class Main extends Component {
   }
 }
 
-// in case we are working with reactrouter we need to enclose this with withRouter
+// for exporting purpose we export our content like this
 // export default (connect(mapStateToProps)(Main));
-
+// in case we are working with reactrouter we need to enclose this with withRouter as given below
 export default withRouter(connect(mapStateToProps)(Main));

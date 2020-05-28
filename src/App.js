@@ -12,6 +12,7 @@ class App extends Component {
 
   render(){
     return (
+      // with this we are accessing the store we made in configureStore function 
       <Provider store = {store}>
         <BrowserRouter>
           <div>

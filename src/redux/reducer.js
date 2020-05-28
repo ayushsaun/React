@@ -3,6 +3,7 @@ import {COMMENTS} from '../shared/Comments'
 import {LEADERS} from '../shared/Leaders'
 import {PROMOTIONS} from '../shared/Promotions'
 
+// this stores initial state 1
 export const initialState = {
     // so basically we stored all the data of DISHES in dishes a new object
     SelectedDish : null,
