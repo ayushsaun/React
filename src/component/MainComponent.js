@@ -24,7 +24,6 @@ class Main extends Component {
 
   constructor(props) {
     super(props)
-
   }
 
   render(){
@@ -45,7 +44,7 @@ class Main extends Component {
       return(
         // parseInt will convert the string coming from match.params.dishId into a base 10 integer as mentioned in
         <DishDetail dish={this.props.dishes.filter((dish) => dish.id == parseInt(match.params.dishId,10))[0]} 
-        comments={this.props.comments.filter((comment) => comment.id == parseInt(match.params.dishId,10))}
+        comments={this.props.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId,10))}
           />
       )
     }
@@ -57,7 +56,8 @@ class Main extends Component {
           <Route path="/home" component = {HomePage} />
           <Route path="/aboutus" component={() => <About leaders={this.props.leaders} /> } />
           <Route exact path="/menu" component={() => <Menu dish={this.props.dishes} />} />
-          {/* here we passed dishId to menu in different fashion and it can be used in menuComponent as we observed */}
+          {/* earlier in menu we made whole card into a link which on clicking will show the dish detail and comments on it
+          so that link was connected using the way given below where we received the link and then passed it to DishWithId */}
           <Route path='/menu/:dishId' component={DishWithId} />
           <Route exact path="/contactus" component = {Contact} />
           <Redirect to='/home' />

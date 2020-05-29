@@ -2,6 +2,8 @@ import React from "react"
 import { Card , CardBody , CardImg , CardTitle , Breadcrumb , BreadcrumbItem } from "reactstrap"
 import { Link } from 'react-router-dom'
 
+
+    // in case of link we get info in form of props.contentname but in case we use constructor then we use this.props
     function RenderDish({dish}) {
         if (dish != null) {
             return(
