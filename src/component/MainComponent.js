@@ -8,6 +8,7 @@ import Footer from './FooterComponent'
 import {Switch , Route , Redirect , withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import About from './Aboutus'
+import { addComment } from '../redux/ActionCreators';
 
 // here we are getting state values from the state function we made in reducer.js which is accessible from configureStore
 // and we added that in app.js so its accessible everywhere now
@@ -19,6 +20,17 @@ const mapStateToProps = state => {
     promotions : state.promotions
   }   
 }
+
+// this is for dispatching changes we made to comments
+// so when we click to button of form it will receive parameters in dispatch 
+const mapDispatchToProps = dispatch => ({
+  
+  // addComment is a property which receives these 4 values and then dispatch the function
+  // dispatch recieves addComment as action with all the 4 values
+
+  addComment: (dishId, rating, author, comments) => dispatch(addComment(dishId, rating, author, comments))
+
+});
 
 class Main extends Component {
 
@@ -43,9 +55,12 @@ class Main extends Component {
     const DishWithId = ({match}) => {
       return(
         // parseInt will convert the string coming from match.params.dishId into a base 10 integer as mentioned in
-        <DishDetail dish={this.props.dishes.filter((dish) => dish.id == parseInt(match.params.dishId,10))[0]} 
-        comments={this.props.comments.filter((comment) => comment.dishId == parseInt(match.params.dishId,10))}
-          />
+        <DishDetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+        comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+        addComment={this.props.addComment}
+      />
+        // the addComment we made in MainComponent.js will be passed to dishDetail as parameter
+        // so we can use it to dispatch the action to store
       )
     }
 
@@ -71,4 +86,4 @@ class Main extends Component {
 // for exporting purpose we export our content like this
 // export default (connect(mapStateToProps)(Main));
 // in case we are working with reactrouter we need to enclose this with withRouter as given below
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps , mapDispatchToProps)(Main));
