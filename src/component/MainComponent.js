@@ -9,6 +9,7 @@ import {Switch , Route , Redirect , withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import About from './Aboutus'
 import { addComment , fetchDishes } from '../redux/ActionCreators';
+import { actions } from 'react-redux-form'
 
 // here we are getting state values from the state function we made in reducer.js which is accessible from configureStore
 // and we added that in app.js so its accessible everywhere now
@@ -29,7 +30,8 @@ const mapDispatchToProps = dispatch => ({
   // dispatch recieves addComment as action with all the 4 values
 
   addComment: (dishId, rating, author, comments) => dispatch(addComment(dishId, rating, author, comments)),
-  fetchDishes : () => {dispatch(fetchDishes())}
+  fetchDishes : () => {dispatch(fetchDishes())},
+  resetFeedbackForm: () => {dispatch(actions.reset('feedback'))}
 
 });
 
@@ -67,7 +69,7 @@ class Main extends Component {
         dishesLoading = {this.props.dishes.isLoading}
         dishesErrMess = {this.props.dishes.errMess}
         comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
-        addComment={this.props.addComment}
+        addComment={this.props.addComment}  
       />
         // the addComment we made in MainComponent.js will be passed to dishDetail as parameter
         // so we can use it to dispatch the action to store
@@ -84,7 +86,7 @@ class Main extends Component {
           {/* earlier in menu we made whole card into a link which on clicking will show the dish detail and comments on it
           so that link was connected using the way given below where we received the link and then passed it to DishWithId */}
           <Route path='/menu/:dishId' component={DishWithId} />
-          <Route exact path="/contactus" component = {Contact} />
+          <Route exact path="/contactus" component = {() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
           <Redirect to='/home' />
         </Switch>
         <Footer />
