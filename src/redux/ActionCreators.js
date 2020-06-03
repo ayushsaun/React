@@ -28,12 +28,28 @@ export const fetchDishes = () => (dispatch) => {
     dispatch(dishesLoading(true));
 
     return fetch(baseUrl + 'dishes')
+
+        .then(response => {
+            if (response.ok) {
+                return response  // this response then become available to next response
+            }
+            else {
+                var error = new Error('Error'+ response.status + ':' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
         .then(response => response.json()) //this will convert it into json
         // Now once we have done that, then we need to, Take that JSON.
         // So once the JSON, so this response.json will convert that to response.json and
         // then it will become available here.
         // And then we'll call that as the parameter as a dish, dishes parameter.
-        .then(dishes => dispatch(addDishes(dishes)));
+        .then(dishes => dispatch(addDishes(dishes)))
+        .catch(error => dispatch(dishesFailed(error.message)))
 }
 
 export const dishesLoading = () => ({
@@ -56,12 +72,28 @@ export const addDishes = (dishes) => ({
 export const fetchComments = () => (dispatch) => {
 
     return fetch(baseUrl + 'comments')
+
+        .then(response => {
+            if (response.ok) {
+                return response  // this response then become available to next response
+            }
+            else {
+                var error = new Error('Error'+ response.status + ':' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
         .then(response => response.json()) //this will convert it into json
         // Now once we have done that, then we need to, Take that JSON.
         // So once the JSON, so this response.json will convert that to response.json and
         // then it will become available here.
         // And then we'll call that as the parameter as a dish, dishes parameter.
-        .then(comments => dispatch(addComments(comments)));
+        .then(comments => dispatch(addComments(comments)))
+        .catch(error => dispatch(commentsFailed(error.message)))
 }
 
 export const commentsFailed = (errmess) => ({
@@ -81,12 +113,28 @@ export const fetchPromos = () => (dispatch) => {
     dispatch(promosLoading(true));
 
     return fetch(baseUrl + 'promotions')
+                
+        .then(response => {
+            if (response.ok) {
+                return response  // this response then become available to next response
+            }
+            else {
+                var error = new Error('Error'+ response.status + ':' + response.statusText);
+                error.response = response;
+                throw error;
+            }
+        },
+        error => {
+            var errmess = new Error(error.message);
+            throw errmess;
+        })
         .then(response => response.json()) //this will convert it into json
         // Now once we have done that, then we need to, Take that JSON.
         // So once the JSON, so this response.json will convert that to response.json and
         // then it will become available here.
         // And then we'll call that as the parameter as a dish, dishes parameter.
-        .then(promos => dispatch(addPromos(promos)));
+        .then(promos => dispatch(addPromos(promos)))
+        .catch(error => dispatch(promosFailed(error.message)))
 }
 
 export const promosLoading = () => ({
