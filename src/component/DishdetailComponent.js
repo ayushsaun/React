@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { Control , LocalForm , Errors } from 'react-redux-form'
 import { Loading } from './LoadingComponent'
 import { baseUrl } from '../shared/baseUrl'
+import { FadeTransform , Fade , Stagger } from 'react-animation-components'
 
     // in case of link we get info in form of props.contentname but in case we use constructor then we use this.props
     function RenderDish({dish}) {
@@ -11,13 +12,19 @@ import { baseUrl } from '../shared/baseUrl'
             return(
                 
                     <div key={dish.id} className="col-12 col-md-5 m-1">
-                        <Card>
-                            <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name}></CardImg>
-                            <CardBody>
-                            <CardTitle>{dish.name}</CardTitle> 
-                                {dish.description}
-                            </CardBody>
-                        </Card>
+                        <FadeTransform in 
+                            transformProps = {{
+                                exitTransform: 'scale(0.5) translateY(-50%)'
+                            }}
+                        >
+                            <Card>
+                                <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name}></CardImg>
+                                <CardBody>
+                                <CardTitle>{dish.name}</CardTitle> 
+                                    {dish.description}
+                                </CardBody>
+                            </Card>
+                        </FadeTransform>
                     </div>
                 
             )
@@ -32,17 +39,21 @@ import { baseUrl } from '../shared/baseUrl'
         }
         const Com = comments.map(comment => {
             return (
-                <li key={comment.id}>
-                    <p>{comment.comment}</p>
-                    <p>-- {comment.author},
-                        &nbsp;
-                        {new Intl.DateTimeFormat('en-US', {
-                            year: 'numeric',
-                             month: 'long',
-                            day: '2-digit'
-                        }).format(new Date(comment.date))}
-                    </p>
-                </li>
+                <Stagger in>
+                    <Fade in>
+                        <li key={comment.id}>
+                            <p>{comment.comment}</p>
+                            <p>-- {comment.author},
+                                &nbsp;
+                                {new Intl.DateTimeFormat('en-US', {
+                                    year: 'numeric',
+                                        month: 'long',
+                                    day: '2-digit'
+                                }).format(new Date(comment.date))}
+                            </p>
+                        </li>
+                    </Fade>
+                </Stagger>
             )
         })
 
