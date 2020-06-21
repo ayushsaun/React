@@ -8,15 +8,16 @@ import Footer from './FooterComponent'
 import {Switch , Route , Redirect , withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import About from './Aboutus'
-import { addComment , fetchDishes , fetchComments , fetchPromos } from '../redux/ActionCreators';
+import { postComment , fetchDishes , fetchComments , fetchPromos } from '../redux/ActionCreators';
 import { actions } from 'react-redux-form'
+import { TransitionGroup , CSSTransition } from 'react-transition-group'
 
 // here we are getting state values from the state function we made in reducer.js which is accessible from configureStore
 // and we added that in app.js so its accessible everywhere now
 const mapStateToProps = state => {
   return {
     dishes : state.dishes,
-    comments : state.comments,
+    comments: state.comments,
     leaders : state.leaders,
     promotions : state.promotions
   }   
@@ -29,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
   // addComment is a property which receives these 4 values and then dispatch the function
   // dispatch recieves addComment as action with all the 4 values
 
-  addComment: (dishId, rating, author, comments) => dispatch(addComment(dishId, rating, author, comments)),
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
   fetchDishes : () => {dispatch(fetchDishes())},
   resetFeedbackForm: () => {dispatch(actions.reset('feedback'))},
   fetchComments : () => {dispatch(fetchComments())},
@@ -76,7 +77,7 @@ class Main extends Component {
         dishesErrMess = {this.props.dishes.errMess}
         comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
         commentsErrMess = {this.props.comments.errMess}
-        addComment={this.props.addComment}  
+        postComment={this.props.postComment}  
       />
         // the addComment we made in MainComponent.js will be passed to dishDetail as parameter
         // so we can use it to dispatch the action to store
@@ -86,16 +87,20 @@ class Main extends Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route path="/home" component = {HomePage} />
-          <Route path="/aboutus" component={() => <About leaders={this.props.leaders} /> } />
-          <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
-          {/* earlier in menu we made whole card into a link which on clicking will show the dish detail and comments on it
-          so that link was connected using the way given below where we received the link and then passed it to DishWithId */}
-          <Route path='/menu/:dishId' component={DishWithId} />
-          <Route exact path="/contactus" component = {() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
-          <Redirect to='/home' />
-        </Switch>
+        <TransitionGroup>
+          <CSSTransition key={this.props.location.key} classNames="page" timeout={300} >
+            <Switch>
+              <Route path="/home" component = {HomePage} />
+              <Route path="/aboutus" component={() => <About leaders={this.props.leaders} /> } />
+              <Route exact path="/menu" component={() => <Menu dishes={this.props.dishes} />} />
+              {/* earlier in menu we made whole card into a link which on clicking will show the dish detail and comments on it
+              so that link was connected using the way given below where we received the link and then passed it to DishWithId */}
+              <Route path='/menu/:dishId' component={DishWithId} />
+              <Route exact path="/contactus" component = {() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+              <Redirect to='/home' />
+            </Switch>
+          </CSSTransition>
+        </TransitionGroup>
         <Footer />
       </div>
     );

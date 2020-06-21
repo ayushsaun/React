@@ -3,7 +3,7 @@ import * as ActionTypes from './ActionTypes'
 import { baseUrl } from '../shared/baseUrl';
 
 //this is a function that creates action object
-export const addComment =  (dishId , rating , author , comments) => ({
+export const addComment =  (comment) => ({
     //every action object must contain type
     type: ActionTypes.ADD_COMMENT,
 
@@ -11,15 +11,49 @@ export const addComment =  (dishId , rating , author , comments) => ({
     // to be carried in so the data that is sent back by the addComment.
     //it is a very natural way of specifying whatever data needs to be carried in the action 
     // object to the reducer function 
-    payload: {
+    payload: comment
+})
+
+export const postComment = (dishId , rating , author , comment) => (dispatch) => {
+   
+    const newComment = {
         dishId: dishId,
         rating: rating,
         author: author,
-        comments: comments
+        comment: comment
     }
-})
+    newComment.date = new Date().toISOString();
 
-
+    return fetch(baseUrl + 'comments' , {
+        method: 'POST',
+        body: JSON.stringify(newComment),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'same-origin'
+    })
+    
+    .then(response => {
+        if (response.ok) {
+            return response  // this response then become available to next response
+        }
+        else {
+            var error = new Error('Error'+ response.status + ':' + response.statusText);
+            error.response = response;
+            throw error;
+        }
+    },
+    error => {
+        var errmess = new Error(error.message);
+        throw errmess;
+    })
+    .then(response => response.json())
+    .then(response => dispatch(addComment(response)))
+    .catch(error =>  { console.log('post comments', error.message); 
+                    alert('Your comment could not be posted\nError: '+error.message);
+                    }
+        );
+}
 
 // we are going to create this as thunk thats why its going to return a function thats why empty ()
 // and inside that there will be another function 

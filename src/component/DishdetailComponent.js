@@ -24,7 +24,7 @@ import { baseUrl } from '../shared/baseUrl'
         }
     }
 
-    function RenderComments({comments, addComment, dishId}) {
+    function RenderComments({comments, postComment, dishId}) {
         if(comments == null) {
             return (
                 <div></div>
@@ -52,7 +52,7 @@ import { baseUrl } from '../shared/baseUrl'
                 <h3>Comments</h3>
                 <ul className='list-unstyled'>
                     {Com}
-                    <CommentForm dishId={dishId} addComment={addComment} />
+                    <CommentForm dishId={dishId} postComment={postComment} />
                 </ul>
 
             </div>
@@ -104,7 +104,7 @@ import { baseUrl } from '../shared/baseUrl'
                 <div className="row">
                     <RenderDish dish = {props.dish} />
                     <RenderComments comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}
                     />
                 </div>
@@ -140,7 +140,7 @@ import { baseUrl } from '../shared/baseUrl'
         handleSubmit(values) {
             this.toggleComment()
             // with this when we click on submit it will be added to list of comments
-            this.props.addComment(this.props.dishId, values.rating, values.author, values.comments);
+            this.props.postComment(this.props.dishId, values.rating, values.author, values.comments);
         }
 
         render() {
